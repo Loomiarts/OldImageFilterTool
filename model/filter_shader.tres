@@ -1,0 +1,74 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "shader_type canvas_item;
+
+uniform float contrast = 1.0;
+uniform float color_adjustment_intensity = 1.0;
+uniform vec2 image_size = vec2(1920.0, 1080.0);
+uniform sampler2D grain_texture : hint_albedo;
+uniform float grain_size = 0.15;
+uniform float grain_intensity_highlights = 0.4;
+uniform float grain_intensity_midtones = 0.7;
+uniform float grain_intensity_shadows = 0.5;
+uniform sampler2D grunge_texture : hint_albedo;
+uniform float grunge_intensity = 0.18;
+uniform float grunge_size = 1.0;
+uniform sampler2D paper_texture : hint_albedo;
+uniform sampler2D paper_damage_texture : hint_albedo;
+uniform float paper_intensity = 1.0;
+uniform float paper_damage_intensity = 0.3;
+
+float get_luminance(vec4 color) {
+	return color.r * 0.3 + color.g * 0.59 + color.b * 0.11;
+}
+
+vec4 adjust_color(vec4 input) {
+	vec4 result = vec4(pow(input.r, contrast), pow(input.g, contrast), pow(input.b, contrast), input.a);
+	float luminance = get_luminance(result);
+	float midtone = 1.0 - abs((luminance - 0.5) * 2.0);
+	return result + (vec4(0.0, 0.0, -0.025, 0.0) * midtone * color_adjustment_intensity);
+}
+
+vec4 add_grain(vec4 input, vec2 uv) {
+	vec2 aspect_ratio = vec2(image_size.x / image_size.y, 1.0);
+	float luminance = get_luminance(input);
+	float grain = texture(grain_texture, uv * (image_size.y / 1080.0) * aspect_ratio / grain_size).r - 0.5;
+	float intensity = 0.0;
+	if (luminance < 0.5) {
+		intensity = mix(grain_intensity_shadows, grain_intensity_midtones, luminance * 2.0);
+	} else {
+		intensity = mix(grain_intensity_midtones, grain_intensity_highlights, (luminance - 0.5) * 2.0);
+	}
+	return input + grain * intensity;
+}
+
+vec4 add_grunge(vec4 input, vec2 uv) {
+	vec2 aspect_ratio = vec2(image_size.x / image_size.y, 1.0);
+	float luminance = get_luminance(input);
+	float grunge = texture(grunge_texture, uv * (image_size.y / 1080.0) * aspect_ratio / grunge_size).r - 0.5;
+	return input + (grunge * grunge_intensity * (1.0 - luminance));
+}
+
+vec4 add_paper(vec4 input, vec2 uv) {
+	float luminance = get_luminance(input);
+	if (image_size.x > image_size.y) {
+		float new_x = uv.y;
+		float new_y = uv.x * -1.0;
+		uv = vec2(new_x, new_y);
+	}
+	vec4 paper = mix(vec4(1.0, 1.0, 1.0, 1.0), texture(paper_texture, uv), paper_intensity);
+	float damage = texture(paper_damage_texture, uv).r * paper_damage_intensity * 2.0;
+	damage *= (1.0 - luminance);
+	return paper - (1.0 - input) + damage;
+}
+
+void fragment() {
+	vec4 result = texture(TEXTURE, UV);
+	result = adjust_color(result);
+	result = add_grain(result, UV);
+	result = add_grunge(result, UV);
+	result = add_paper(result, UV);
+	result.a = texture(TEXTURE, UV).a;
+	COLOR = result;
+}"

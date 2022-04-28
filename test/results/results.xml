@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<testsuites failures="0" name="TestXML" tests="1" time="0.029">
+	<testsuite name="Project" failures="0"  tests="10" time="0">
+		<testcase name=" should not convert image paths to relative when set project file path if already relative" time="0"></testcase>
+		<testcase name=" should convert relative image paths to absolute when cant resolve relative path" time="0"></testcase>
+		<testcase name=" should convert image paths to relative when set project file path" time="0"></testcase>
+		<testcase name=" should add image converting to relative path" time="0"></testcase>
+		<testcase name=" from json dictionary" time="0"></testcase>
+		<testcase name=" to json dictionary" time="0"></testcase>
+		<testcase name=" should add image" time="0"></testcase>
+		<testcase name=" should convert relative image paths when update project file path" time="0"></testcase>
+		<testcase name=" should add image not converting to relative path if project doesnt have file path" time="0"></testcase>
+		<testcase name=" should return image absolute path" time="0"></testcase>
+	</testsuite>
+
+</testsuites>

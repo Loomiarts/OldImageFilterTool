@@ -1,0 +1,32 @@
+[gd_scene format=2]
+
+[node name="AboutPanel" type="PanelContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1017.0
+margin_bottom = 593.0
+
+[node name="AppInfoLabel" type="Label" parent="VBoxContainer"]
+margin_right = 1010.0
+margin_bottom = 218.0
+text = "OLD IMAGE FILTER
+Made with Godot Engine
+(godotengine.org/license)
+
+Developed by Márcio Rosa @ Loomiarts for the game SQUADRON 51.
+
+USAGE:
+
+In the Edit tab, import the images using the \"Import images...\" button and then adjust the settings for each.
+
+Tip: change the parameters only if really necessary. Otherwise, keep the default values to conform to the artwork of the game.
+
+Go to the Export tab to batch export all images to a folder or single export the current image."
+autowrap = true

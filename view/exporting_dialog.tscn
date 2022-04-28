@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://view/exporting_dialog.gd" type="Script" id=1]
+
+[node name="ExportingDialog" type="WindowDialog"]
+margin_right = 48.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 400, 100 )
+popup_exclusive = true
+window_title = "Exporting..."
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 8
+custom_constants/margin_left = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProgressBar" type="ProgressBar" parent="MarginContainer"]
+margin_left = 8.0
+margin_top = 42.0
+margin_right = 392.0
+margin_bottom = 58.0
+rect_min_size = Vector2( 0, 16 )
+size_flags_vertical = 4
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}

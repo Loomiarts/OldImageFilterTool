@@ -1,0 +1,109 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://view/export_panel.gd" type="Script" id=1]
+[ext_resource path="res://view/exporting_dialog.tscn" type="PackedScene" id=2]
+[ext_resource path="res://model/filter_material.tres" type="Material" id=3]
+
+[node name="ExportPanel" type="PanelContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1017.0
+margin_bottom = 593.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Toolbar" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 1010.0
+margin_bottom = 40.0
+custom_constants/separation = 8
+
+[node name="ExportCurrentButton" type="Button" parent="VBoxContainer/Toolbar"]
+margin_right = 114.0
+margin_bottom = 40.0
+hint_tooltip = "Exports the current image to a new file."
+text = "Export current..."
+
+[node name="ExportAllButton" type="Button" parent="VBoxContainer/Toolbar"]
+margin_left = 122.0
+margin_right = 205.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 40 )
+hint_tooltip = "Exports all images to a folder."
+text = "Export all..."
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+margin_top = 44.0
+margin_right = 1010.0
+margin_bottom = 586.0
+size_flags_vertical = 3
+
+[node name="ViewportContainer" type="ViewportContainer" parent="VBoxContainer/ScrollContainer"]
+margin_right = 500.0
+margin_bottom = 500.0
+rect_min_size = Vector2( 500, 500 )
+stretch = true
+
+[node name="Viewport" type="Viewport" parent="VBoxContainer/ScrollContainer/ViewportContainer"]
+size = Vector2( 500, 500 )
+own_world = true
+transparent_bg = true
+handle_input_locally = false
+hdr = false
+disable_3d = true
+usage = 0
+render_target_update_mode = 3
+gui_disable_input = true
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/ScrollContainer/ViewportContainer/Viewport"]
+material = ExtResource( 3 )
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="SelectExportFolderDialog" type="FileDialog" parent="."]
+margin_left = 229.0
+margin_top = 189.0
+margin_right = 900.0
+margin_bottom = 542.0
+popup_exclusive = true
+window_title = "Open a Directory"
+resizable = true
+dialog_hide_on_ok = true
+mode = 2
+access = 2
+current_dir = "/Projects/Squad51ContentCreation/Tools/TilesGenerator2"
+current_path = "/Projects/Squad51ContentCreation/Tools/TilesGenerator2/"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SelectExportFileDialog" type="FileDialog" parent="."]
+margin_left = 229.0
+margin_top = 189.0
+margin_right = 900.0
+margin_bottom = 542.0
+popup_exclusive = true
+resizable = true
+dialog_hide_on_ok = true
+access = 2
+filters = PoolStringArray( "*.png ; PNG Images" )
+current_dir = "/Projects/Squad51ContentCreation/Tools/TilesGenerator2"
+current_path = "/Projects/Squad51ContentCreation/Tools/TilesGenerator2/"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ExportingDialog" parent="." instance=ExtResource( 2 )]
+
+[connection signal="pressed" from="VBoxContainer/Toolbar/ExportCurrentButton" to="." method="_on_ExportCurrentButton_pressed"]
+[connection signal="pressed" from="VBoxContainer/Toolbar/ExportAllButton" to="." method="_on_ExportButton_pressed"]
+[connection signal="dir_selected" from="SelectExportFolderDialog" to="." method="_on_ExportImageDialog_dir_selected"]
+[connection signal="file_selected" from="SelectExportFileDialog" to="." method="_on_SelectExportFileDialog_file_selected"]

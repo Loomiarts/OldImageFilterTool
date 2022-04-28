@@ -1,0 +1,25 @@
+[gd_resource type="ShaderMaterial" load_steps=6 format=2]
+
+[ext_resource path="res://model/filter_shader.tres" type="Shader" id=1]
+[ext_resource path="res://textures/grain.tga" type="Texture" id=2]
+[ext_resource path="res://textures/grunge.png" type="Texture" id=3]
+[ext_resource path="res://textures/paper8.png" type="Texture" id=4]
+[ext_resource path="res://textures/paper7.png" type="Texture" id=5]
+
+[resource]
+shader = ExtResource( 1 )
+shader_param/contrast = 1.0
+shader_param/color_adjustment_intensity = 1.0
+shader_param/image_size = Vector2( 1920, 1080 )
+shader_param/grain_size = 0.15
+shader_param/grain_intensity_highlights = 0.4
+shader_param/grain_intensity_midtones = 0.7
+shader_param/grain_intensity_shadows = 0.5
+shader_param/grunge_intensity = 0.18
+shader_param/grunge_size = 1.0
+shader_param/paper_intensity = 1.0
+shader_param/paper_damage_intensity = 0.3
+shader_param/grain_texture = ExtResource( 2 )
+shader_param/grunge_texture = ExtResource( 3 )
+shader_param/paper_texture = ExtResource( 4 )
+shader_param/paper_damage_texture = ExtResource( 5 )
