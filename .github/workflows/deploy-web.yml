@@ -2,7 +2,6 @@ name: Deploy WEB
 on: [workflow_dispatch]
 env:
   GODOT_VERSION: 3.3.4
-  EXPORT_NAME: OldImageFilterTool
 jobs:
   export-web:
     name: Web Export
@@ -21,8 +20,7 @@ jobs:
       - name: Web Build
         run: |
           mkdir -v -p deploy/web
-          cd $EXPORT_NAME
-          godot -v --export "HTML5" ../build/web/index.html
+          godot -v --export "HTML5" deploy/web/index.html
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
