@@ -55,6 +55,8 @@ func _refresh_image_selector(refresh_selection = false):
 
 
 func _on_Tabs_tab_selected(tab):
+	if tab == 0:
+		_refresh_image_selector(true)
 	if tab == 1:
 		$MainPanel/Tabs/ExportPanel.refresh_viewport()
 
