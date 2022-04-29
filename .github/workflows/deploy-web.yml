@@ -1,6 +1,8 @@
 name: deploy-release
 on:
-  - workflow_dispatch
+  push:
+    tags:
+      - '*.*.*'
   
 env:
   GODOT_VERSION: 3.4.4
@@ -11,10 +13,11 @@ jobs:
     steps:
       - name: Create
         run: |
-          curl -X POST -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/loomiarts/OldImageFilterTool/releases -d '{"tag_name":"${GITHUB_REF_NAME}","target_commitish":"master","name":${GITHUB_REF_NAME}","body":"${GITHUB_REF_NAME}","draft":false,"prerelease":false,"generate_release_notes":false}'
+          curl i -u marciodrosa:${CI_TOKEN} -X POST -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/loomiarts/OldImageFilterTool/releases -d '{"tag_name":"${GITHUB_REF_NAME}","target_commitish":"master","name":${GITHUB_REF_NAME}","body":"${GITHUB_REF_NAME}","draft":false,"prerelease":false,"generate_release_notes":false}'
 
   export-windows:
     name: Windows Export
+    needs: create-release
     runs-on: ubuntu-20.04
     container:
       image: barichello/godot-ci:3.4.4
@@ -36,9 +39,13 @@ jobs:
         with:
           name: OldImageFilterToolWindows$GITHUB_REF_NAME
           path: Deploy/Windows
+      - name: Upload Release
+        run: |
+          curl i -u marciodrosa:${CI_TOKEN} -X PATCH -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/loomiarts/OldImageFilterTool/releases/assets/1 -d '{"name":"Deploy/Windows/OldImageFilterToolWindows${GITHUB_REF_NAME}.zip","label":"Mac binary"}'
   
   export-mac:
     name: Mac Export
+    needs: create-release
     runs-on: ubuntu-20.04
     container:
       image: barichello/godot-ci:3.4.4
@@ -63,6 +70,7 @@ jobs:
 
   export-web:
     name: Web Export
+    needs: create-release
     runs-on: ubuntu-20.04
     container:
       image: barichello/godot-ci:3.4.4
