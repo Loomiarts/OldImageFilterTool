@@ -1,6 +1,5 @@
 .import/
 *.translation
-export_presets.cfg
 OldImageFilter.exe
 OldImageFilter.pck
 OldImageFilter.zip
