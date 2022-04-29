@@ -41,7 +41,8 @@ jobs:
           path: Deploy/Windows
       - name: Upload Release
         run: |
-          apk add curl
+          sudo apt update && sudo apt upgrade
+          sudo apt install curl
           curl i -u marciodrosa:${CI_TOKEN} -X PATCH -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/loomiarts/OldImageFilterTool/releases/assets/1 -d '{"name":"Deploy/Windows/OldImageFilterToolWindows${GITHUB_REF_NAME}.zip","label":"Mac binary"}'
   
   export-mac:
