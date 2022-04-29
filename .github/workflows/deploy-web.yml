@@ -1,8 +1,58 @@
-name: Deploy WEB
-on: [workflow_dispatch]
+name: deploy-release
+on:
+  - workflow_dispatch
+  
 env:
   GODOT_VERSION: 3.4.4
 jobs:
+  export-windows:
+    name: Windows Export
+    runs-on: ubuntu-20.04
+    container:
+      image: barichello/godot-ci:3.3.4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          lfs: true
+      - name: Setup
+        run: |
+          mkdir -v -p ~/.local/share/godot/templates
+          mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
+      - name: Windows Build
+        run: |
+          mkdir -v -p Deploy/Windows
+          godot -v --export "Windows Desktop" Deploy/Windows/OldImageFilterTool.exe
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: OldImageFilterToolWindows$GITHUB_REF_NAME
+          path: Deploy/Windows
+  
+  export-mac:
+    name: Mac Export
+    runs-on: ubuntu-20.04
+    container:
+      image: barichello/godot-ci:3.3.4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          lfs: true
+      - name: Setup
+        run: |
+          mkdir -v -p ~/.local/share/godot/templates
+          mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
+      - name: Mac Build
+        run: |
+          mkdir -v -p Deploy/Mac
+          godot -v --export "Mac OSX" Deploy/Mac/OldImageFilterTool.zip
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: OldImageFilterToolMac$GITHUB_REF_NAME
+          path: Deploy/Mac
+
   export-web:
     name: Web Export
     runs-on: ubuntu-20.04
@@ -24,7 +74,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: web
+          name: OldImageFilterToolWeb$GITHUB_REF_NAME
           path: Deploy/Web
       - name: Install rsync 📚
         run: |
