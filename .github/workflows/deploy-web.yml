@@ -8,7 +8,8 @@ jobs:
   create-release:
     name: Create Release
     runs-on: ubuntu-20.04
-    - name: Create
+    steps:
+      - name: Create
         run: |
           curl -X POST -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/loomiarts/OldImageFilterTool/releases -d '{"tag_name":"${GITHUB_REF_NAME}","target_commitish":"master","name":${GITHUB_REF_NAME}","body":"${GITHUB_REF_NAME}","draft":false,"prerelease":false,"generate_release_notes":false}'
 
