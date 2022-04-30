@@ -40,9 +40,10 @@ jobs:
           name: OldImageFilterToolWindows$GITHUB_REF_NAME
           path: Deploy/Windows
       - name: Upload Release
-        run: |
-          apt install curl
-          curl i -u marciodrosa:${CI_TOKEN} -X PATCH -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/loomiarts/OldImageFilterTool/releases/assets/1 -d '{"name":"Deploy/Windows/OldImageFilterToolWindows${GITHUB_REF_NAME}.zip","label":"Mac binary"}'
+        uses: djn24/add-asset-to-release@v1
+        with:
+          token: $GITHUB_TOKEN
+          path: Deploy/Windows/OldImageFilterToolWindows$GITHUB_REF_NAME.zip
   
   export-mac:
     name: Mac Export
