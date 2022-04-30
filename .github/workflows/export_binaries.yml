@@ -1,4 +1,4 @@
-name: deploy-release
+name: export-binaries
 on:
   push:
     tags:
@@ -28,7 +28,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: OldImageFilterToolWindows${{GITHUB_REF_NAME}}
+          name: OldImageFilterToolWindows${{ env.GITHUB_REF_NAME }}
           path: Deploy/Windows
   
   export-mac:
@@ -52,5 +52,5 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          name: OldImageFilterToolMac${{GITHUB_REF_NAME}}
+          name: OldImageFilterToolMac${{ env.GITHUB_REF_NAME }}
           path: Deploy/Mac
